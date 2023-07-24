@@ -1,0 +1,34 @@
+{
+	"dump_folder_path": "utils",
+	"version_file_name": "versions.json",
+	"dumps": [
+		{
+			"name": "Scaler",
+			"type": "gdown",
+			"path": "scaler.pkl",
+			"v": 0,
+			"info": {
+				"id": "1-4iU8UtCpF6qmhZnemo7s8dkLNDNZ0XH"
+			}
+		},
+		{
+			"name": "Vectors",
+			"type": "gdown",
+			"path": "vectors.json",
+			"v": 0,
+			"info": {
+				"id": "1dtB13UOvk8QEKkFPTeR7ujGwhze1gAVC"
+			}
+		},
+		{
+			"name": "Encoder",
+			"type": "tf_hub",
+			"path": "encoder",
+			"v": 0,
+			"info": {
+				"url": "https://tfhub.dev/google/universal-sentence-encoder/4"
+			}
+		}
+	]
+
+}
