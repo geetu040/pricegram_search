@@ -3,6 +3,7 @@ import json
 import joblib
 import time
 import numpy as np
+import pandas as pd
 import tensorflow_hub as hub
 from thefuzz import fuzz, process
 from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances

@@ -1,1 +1,1 @@
-from .init import engine
+from .engine import SearchEngine
