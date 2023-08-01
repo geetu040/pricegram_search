@@ -7,6 +7,9 @@ import pandas as pd
 import tensorflow_hub as hub
 from thefuzz import fuzz, process
 from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
+import gdown
+import tensorflow as tf
+import tensorflow_hub as hub
 
 class Initializer():
 
@@ -14,6 +17,51 @@ class Initializer():
         self.encoder = None
         self.vectors = None
         self.scaler = None
+
+    def download(self, utils):
+
+        # 1. Creating Dump Folder
+        root = self.dump_path
+        if not os.path.exists(root):
+            os.makedirs(root)
+
+        # 2. Loading versions of previous downloads
+        version_file_path = os.path.join(root, "versions.json")
+        if os.path.exists(version_file_path):
+            with open(version_file_path, 'rb') as f:
+                versions = json.load(f)
+        else:
+            versions = {}
+
+        # 3. Downloading Utils
+        print_bar_len = 20
+        for dump in utils:
+            name, type, path, v, loader, info = list(dump.values())
+            file_name = path
+            path = os.path.join(root, path)
+
+            if versions.get(file_name) == v:
+                print(f" Already Up to Date {name} [v:{v}] ".join(["=" * print_bar_len] * 2))
+                continue
+
+            print(f" Downloading {name} [v:{v}] ".join(["=" * print_bar_len] * 2))
+
+            if type == "gdown":
+                gdown.download(
+                    f"https://drive.google.com/uc?id={info['id']}",
+                    path,
+                    quiet=False
+                )
+            elif type == "tf_hub":
+                embed = hub.load(info['url'])
+                tf.saved_model.save(embed, path)
+
+            versions[file_name] = v
+
+        # 4. Saving Latest Versions
+
+        with open(version_file_path, 'w') as f:
+            json.dump(versions, f)
 
     def initialize(self):
 
@@ -26,24 +74,50 @@ class Initializer():
 
         dump_path = self.dump_path
 
-        initializers = {
-            "Encoder": {
-                "path": os.path.join(dump_path, "encoder"),
-                "loader": self.load_encoder
-            },
-            "Scaler": {
-                "path": os.path.join(dump_path, "scaler.pkl"),
-                "loader": self.load_scaler
-            },
-            "Vectors": {
-                "path": os.path.join(dump_path, "vectors.json"),
-                "loader": self.load_vectors
-            },
-        }
+        # CONFIGURING
 
-        for name, obj in initializers.items():
-            path = obj['path']
-            loader = obj['loader']
+        utils = [
+            {
+                "name": "Scaler",
+                "type": "gdown",
+                "path": "scaler.pkl",
+                "v": 0,
+                "loader": self.load_scaler,
+                "info": {
+                    "id": "1-4iU8UtCpF6qmhZnemo7s8dkLNDNZ0XH"
+                }
+            },
+            {
+                "name": "Vectors",
+                "type": "gdown",
+                "path": "vectors.json",
+                "v": 0,
+                "loader": self.load_vectors,
+                "info": {
+                    "id": "1dtB13UOvk8QEKkFPTeR7ujGwhze1gAVC"
+                }
+            },
+            {
+                "name": "Encoder",
+                "type": "tf_hub",
+                "path": "encoder",
+                "v": 0,
+                "loader": self.load_encoder,
+                "info": {
+                    "url": "https://tfhub.dev/google/universal-sentence-encoder/4"
+                },
+            }
+        ]
+
+        # DOWNLOADING
+        self.download(utils)
+
+        # LOADING
+        for util in utils:
+            
+            path = os.path.join(dump_path, util['path'])
+            loader = util['loader']
+            name = util['name']
             time_i = time.time()
 
             print(f" ------ Loading {name} ({path}) ------ ")

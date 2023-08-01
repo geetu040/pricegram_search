@@ -12,6 +12,6 @@ def data_fetcher(ids):
 
 engine = SearchEngine(
     data_fetcher = data_fetcher,
-    dump_path = "./pricegram_search/utils",	# path to utils
+    dump_path = "./utils",	# path to utils
 )
 ```
