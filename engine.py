@@ -193,6 +193,9 @@ class SearchEngine(Pipeline):
         self.dump_path = dump_path
         self.data_fetcher = data_fetcher
 
+        # loading the utilities in memory
+        self.initialize()
+
     def search(self, keywords, k:int=100):
         return self.pipe(
             keywords = keywords,

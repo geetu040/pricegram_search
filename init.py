@@ -14,5 +14,3 @@ engine = SearchEngine(
     data_fetcher=data_fetcher,
     dump_path="D:/pricegram-backend/api/pricegram_search/utils",
 )
-
-engine.initialize()
