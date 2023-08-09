@@ -2,6 +2,7 @@ import os
 import json
 import joblib
 import time
+import itertools
 import numpy as np
 import pandas as pd
 import tensorflow_hub as hub
@@ -155,6 +156,12 @@ class Utils(Initializer):
 
         return queries
 
+    def get_all_combinations(self, input_list):
+        all_combinations = []
+        for r in range(1, len(input_list) + 1):
+            all_combinations.extend(itertools.combinations(input_list, r))
+        return [" ".join(i) for i in all_combinations]
+
     def get_fuzzy_score(self, query, row):
 
         query = query.lower()
@@ -216,6 +223,7 @@ class Pipeline(Utils):
         #     data['filters']
         # )
         queries = [query.strip().lower() for query in data['keywords']]
+        queries = self.get_all_combinations(queries)
 
         # encoding textual queries to number vector
         encoded = self.encoder(queries).numpy()
