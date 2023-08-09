@@ -219,6 +219,7 @@ class Pipeline(Utils):
 
         # encoding textual queries to number vector
         encoded = self.encoder(queries).numpy()
+        encoded = self.scaler.transform(encoded)
 
         return {
             'queries': queries,
