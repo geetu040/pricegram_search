@@ -54,10 +54,6 @@ class Loader(LoadingUtils):
 
     def vectorizer(self, info):
         path = self.get_path(info['path'])
-
-        tokenizer = None
-        preprocessor = None
-
         return joblib.load(path)
 
     def vectors(self, info):
