@@ -58,8 +58,8 @@ class Loader(LoadingUtils):
 
     def vectors(self, info):
         path = self.get_path(info['path'])
-        with open(path, 'r') as f:
-            return np.array(eval(f.read()))
+        with open(path, 'rb') as f:
+            return json.load(f)
 
 class Initializer():
 
@@ -77,18 +77,18 @@ class Initializer():
             },
             {
                 "name": "vectorizer",
-                "v": 0,
+                "v": 1,
                 "info": {
-                    "id": "13W30nDtyGo-fEKcGjJV1SKm8OpI-z9yU",
+                    "id": "1Nd8B8-D3lAdA57U9JoHjYKp1J73n_TON",
                     "path": "vectorizer.pkl"
                 }
             },
             {
                 "name": "vectors",
-                "v": 0,
+                "v": 1,
                 "info": {
-                    "id": "1-3VsfQWUTcwFKV4nhyvSG03uk_XcjQil",
-                    "path": "vectors.txt"
+                    "id": "1-AVJp2NaTgtZOOFmWE5VdRRr5_9fQUX2",
+                    "path": "vectors.json"
                 }
             },
         ]
@@ -220,16 +220,19 @@ class Pipeline(Utils):
         # calculating scores
         similarity_scores = cosine_similarity(
             data['encoded'],
-            self.vectors
+            self.vectors['vectors']
         )
 
         # sorting arguments by score
-        ids = np.argsort(
+        idx = np.argsort(
             - similarity_scores.mean(axis=0)
         )
 
         # selecting top-k
-        ids = ids[:data['k']]
+        idx = idx[:data['k']]
+
+        # getting product ids by vector index
+        ids = [self.vectors['ids'][i] for i in idx]
 
         return {
             'ids': ids,
@@ -287,6 +290,3 @@ class SearchEngine(Pipeline):
         )
 
         return results['products']
-
-engine = SearchEngine(lambda x: [], "utils")
-engine.search(["iphone"])
