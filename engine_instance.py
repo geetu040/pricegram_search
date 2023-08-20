@@ -7,9 +7,10 @@ import json
 def data_fetcher(pks):
     ids = pks
     products = []
-    for _id in ids:
-        product = Product.objects.get(id=_id)
-        products.append(product)
+    products = Product.objects.filter(id__in=ids)
+    # for _id in ids:
+    #     product = Product.objects.get(id=_id)
+    #     products.append(product)
     serializer = ProductSerializer(products, many=True)
     data = serializer.data
     data = [ dict(i) for i in data ]
