@@ -6,11 +6,7 @@ import json
 
 def data_fetcher(pks):
     ids = pks
-    products = []
-    products = Product.objects.filter(id__in=ids)
-    # for _id in ids:
-    #     product = Product.objects.get(id=_id)
-    #     products.append(product)
+    products = Product.objects.raw(f'SELECT * FROM product WHERE product.id IN {str(tuple(ids))} ORDER BY FIELD(id, {str(tuple(ids))[1:-1]});')
     serializer = ProductSerializer(products, many=True)
     data = serializer.data
     data = [ dict(i) for i in data ]
