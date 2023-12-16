@@ -107,7 +107,7 @@ class SearchEngine(Pipeline):
         self.data_fetcher = data_fetcher
 
         # loading the utilities in memory
-        self.init(skip_init)
+        self.init(skip_init)    
 
     def search(self, keywords, cluster_size:int=50, k:int=100):
         """
@@ -137,6 +137,8 @@ class SearchEngine(Pipeline):
         assert type(keywords[0]) == str
         assert type(cluster_size) == int
         assert type(k) == int
+
+        # Implementation
 
         if cluster_size > k:
             cluster_size = k
