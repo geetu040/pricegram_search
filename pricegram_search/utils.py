@@ -1,3 +1,5 @@
+"""Implementation of ProductsMatch"""
+
 import itertools
 import numpy as np
 import re

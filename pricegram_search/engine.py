@@ -1,3 +1,5 @@
+"""Implementation of Search Engine"""
+
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity, euclidean_distances
 
@@ -93,16 +95,49 @@ class Pipeline(Initializer, ProductsMatch):
         }
 
 class SearchEngine(Pipeline):
-    def __init__(self, data_fetcher, dump_path):
+
+    """Downloading and Loading the Utils and Recommending based on keywords"""
+
+    def __init__(self, data_fetcher, dump_path, skip_init=False):
+        """Downloading and Loading the Utils"""
+
         super().__init__()
 
         self.dump_path = dump_path
         self.data_fetcher = data_fetcher
 
         # loading the utilities in memory
-        self.init()
+        self.init(skip_init)
 
     def search(self, keywords, cluster_size:int=50, k:int=100):
+        """
+        Recommends products based on keywords.
+
+        Parameters:
+        - keywords (List[str]): A list of keywords for product search.
+        - cluster_size (int, optional): Size of clusters used for sorting. Defaults to 50.
+        - k (int, optional): Number of products to fetch. Defaults to 100.
+
+        Returns:
+        - List[Dict[str, Any]]: A list of dictionaries representing recommended products.
+
+        Algorithm:
+        1. If `cluster_size` is greater than `k`, set `cluster_size` to `k`.
+        2. Invoke the internal `pipe` method with provided parameters.
+        3. Extract the 'products' key from the results and return it.
+
+        Note:
+        - The `pipe` method is responsible for processing the keywords, clustering, and sorting products.
+        - The returned products are a list of dictionaries representing recommended products.
+        """
+
+        # Validating the inputs
+        assert type(keywords) == list
+        assert len(keywords) > 0
+        assert type(keywords[0]) == str
+        assert type(cluster_size) == int
+        assert type(k) == int
+
         if cluster_size > k:
             cluster_size = k
 

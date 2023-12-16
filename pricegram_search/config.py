@@ -1,3 +1,5 @@
+"""Pipeline Configuration"""
+
 CONFIG = [
 	{
 		"name": "bert_tokenizer",

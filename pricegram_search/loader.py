@@ -1,3 +1,5 @@
+"""Implementation of Initializer"""
+
 import os
 import json
 import joblib
@@ -69,7 +71,9 @@ class Initializer():
         self.vectorizer.tokenizer = self.bert_tokenizer
         self.vectorizer.preprocessor = lambda x: re.sub(r'[^0-9a-zA-Z ]', '', x)
 
-    def init(self):
+    def init(self, skip_init):
+
+        if skip_init: return
 
         # 0. Initializers
         self.downloader = Downloader(self.dump_path)
