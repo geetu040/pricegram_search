@@ -98,7 +98,7 @@ class SearchEngine(Pipeline):
 
     """Downloading and Loading the Utils and Recommending based on keywords"""
 
-    def __init__(self, data_fetcher, dump_path, skip_init=False):
+    def __init__(self, data_fetcher, dump_path, skip_init=False, verbose=1):
         """Downloading and Loading the Utils"""
 
         super().__init__()
@@ -107,7 +107,7 @@ class SearchEngine(Pipeline):
         self.data_fetcher = data_fetcher
 
         # loading the utilities in memory
-        self.init(skip_init)    
+        self.init(skip_init, verbose)    
 
     def search(self, keywords, cluster_size:int=50, k:int=100):
         """

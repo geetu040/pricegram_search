@@ -71,7 +71,7 @@ class Initializer():
         self.vectorizer.tokenizer = self.bert_tokenizer
         self.vectorizer.preprocessor = lambda x: re.sub(r'[^0-9a-zA-Z ]', '', x)
 
-    def init(self, skip_init):
+    def init(self, skip_init, verbose):
 
         if skip_init: return
 
@@ -99,14 +99,14 @@ class Initializer():
 
             # DOWNLOADING
             if versions.get(name) != v:
-                print(get_info_headline("Downloading"))
+                if verbose: print(get_info_headline("Downloading"))
                 getattr(
                     self.downloader,
                     name
                 )(info)
 
             # LOADING
-            print(get_info_headline("Loading"))
+            if verbose: print(get_info_headline("Loading"))
             setattr(
                 self,
                 name,
