@@ -3,3 +3,4 @@ scikit-learn
 transformers
 joblib
 gdown
+thefuzz
