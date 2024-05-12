@@ -1,7 +1,5 @@
 numpy
 scikit-learn
 transformers
-json
 joblib
-re
 gdown
