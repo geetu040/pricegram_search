@@ -1,0 +1,7 @@
+numpy
+sklearn
+transformers
+json
+joblib
+re
+gdown

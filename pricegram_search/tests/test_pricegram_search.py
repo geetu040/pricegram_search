@@ -1,16 +1,23 @@
+from __future__ import annotations
+
+import json
+import os
 import unittest
-from unittest.mock import MagicMock, patch
-import os, json
+from unittest.mock import MagicMock
+from unittest.mock import patch
+
 from pricegram_search import SearchEngine
 
 OUTPUT = False
 
-class TestSearchEngine(unittest.TestCase):
 
+class TestSearchEngine(unittest.TestCase):
     def setUp(self):
         # Mock data_fetcher function
         self.mock_data_fetcher = MagicMock(return_value=[])
-        self.engine = SearchEngine(data_fetcher=[], dump_path="./utils", verbose=0, skip_init=True)
+        self.engine = SearchEngine(
+            data_fetcher=[], dump_path="./utils", verbose=0, skip_init=True
+        )
 
     def print_test_info(self, test_name, result):
         if OUTPUT:
@@ -24,7 +31,7 @@ class TestSearchEngine(unittest.TestCase):
         cluster_size = 20
         k = 50
 
-        with patch.object(self.engine, 'pipe', return_value={'products': []}):
+        with patch.object(self.engine, "pipe", return_value={"products": []}):
             result = self.engine.search(keywords, cluster_size, k)
 
         self.print_test_info("test_search_valid_inputs", result)
@@ -36,7 +43,7 @@ class TestSearchEngine(unittest.TestCase):
         cluster_size = 30
         k = 20
 
-        with patch.object(self.engine, 'pipe', return_value={'products': []}):
+        with patch.object(self.engine, "pipe", return_value={"products": []}):
             result = self.engine.search(keywords, cluster_size, k)
 
         self.print_test_info("test_search_cluster_size_greater_than_k", result)
@@ -49,10 +56,10 @@ class TestSearchEngine(unittest.TestCase):
         k = 20
 
         with self.assertRaises(AssertionError):
-            result = self.engine.search(keywords, cluster_size, k)
+            _ = self.engine.search(keywords, cluster_size, k)
 
         self.print_test_info("test_search_empty_keywords", "AssertionError")
-        
+
     def test_search_invalid_keywords_type(self):
         # Test case with invalid keywords type
         keywords = "laptop"
@@ -60,9 +67,11 @@ class TestSearchEngine(unittest.TestCase):
         k = 20
 
         with self.assertRaises(AssertionError):
-            result = self.engine.search(keywords, cluster_size, k)
+            _ = self.engine.search(keywords, cluster_size, k)
 
-        self.print_test_info("test_search_invalid_keywords_type", "AssertionError")
+        self.print_test_info(
+            "test_search_invalid_keywords_type", "AssertionError"
+        )
 
     def test_search_invalid_cluster_size_type(self):
         # Test case with invalid cluster_size type
@@ -71,9 +80,11 @@ class TestSearchEngine(unittest.TestCase):
         k = 20
 
         with self.assertRaises(AssertionError):
-            result = self.engine.search(keywords, cluster_size, k)
+            _ = self.engine.search(keywords, cluster_size, k)
 
-        self.print_test_info("test_search_invalid_cluster_size_type", "AssertionError")
+        self.print_test_info(
+            "test_search_invalid_cluster_size_type", "AssertionError"
+        )
 
     def test_search_invalid_k_type(self):
         # Test case with invalid k type
@@ -82,13 +93,13 @@ class TestSearchEngine(unittest.TestCase):
         k = "50"
 
         with self.assertRaises(AssertionError):
-            result = self.engine.search(keywords, cluster_size, k)
+            _ = self.engine.search(keywords, cluster_size, k)
 
         self.print_test_info("test_search_invalid_k_type", "AssertionError")
 
     def test_utils_loading(self):
         versions_path = os.path.join(self.engine.dump_path, "versions.json")
-        
+
         # Check if the path exists
         self.assertTrue(os.path.exists(versions_path), "Utils Downloaded")
 
@@ -97,10 +108,9 @@ class TestSearchEngine(unittest.TestCase):
 
         # Check if all versions match
         for conf in self.engine.config:
-            version_matches = versions.get(conf['name'], None) == conf['v']
+            version_matches = versions.get(conf["name"], None) == conf["v"]
             self.assertTrue(version_matches, "Utils are not latest")
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
