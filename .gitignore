@@ -1,5 +1,7 @@
 # project specifit
 utils/
+dummy_dump_path/
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -88,3 +88,15 @@ The folder structure for the `pricegram_search` Python package is organized as f
 - **requirements.txt:** Lists the Python packages required by the project.
 
 - **setup.py:** Contains metadata about the project, such as its name, version, and dependencies, used for packaging and distribution.
+
+# Testing
+
+For unit and integration testing
+```cmd
+pytest
+```
+
+For scalability testing
+```cmd
+python pricegram_search/tests/test_scalability.py -t 10
+```

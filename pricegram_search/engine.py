@@ -1,11 +1,15 @@
 """Implementation of Search Engine"""
 from __future__ import annotations
 
+import warnings
+
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
 from .loader import Initializer
 from .utils import ProductsMatch
+
+warnings.filterwarnings("ignore")
 
 
 class Pipeline(Initializer, ProductsMatch):
