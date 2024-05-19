@@ -91,6 +91,11 @@ The folder structure for the `pricegram_search` Python package is organized as f
 
 # Testing
 
+For pre-commit checks
+```
+pre-commit run --all-files
+```
+
 For unit and integration testing
 ```cmd
 pytest
